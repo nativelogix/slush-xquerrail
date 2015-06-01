@@ -6,13 +6,22 @@
  * Licensed under the MIT license.
  */
 
-module.exports = function(gulp) {
+module.exports = function(gulp, modules) {
 
+    var PATH = './xquerrail.json';
     var fs = require('fs'),
         nconf = require('nconf');
-    var PATH = './xquerrail.json';
+    var _configuration = nconf.file(PATH);
     return {
-        "configuration": nconf.file(PATH),
-        "path": PATH
+        "configuration": _configuration,
+        "domain": {
+            "includeController": function(filepath) {
+                var modelName = modules.path.basename(filepath)
+                modelName = modelName.substring(0, modelName.length - 10);
+                var controllerName = modules.inflection.pluralize(modelName);
+                var modelDisplayName = modules.inflection.humanize(modelName);
+                return '<controller name="' + controllerName + '" model="' + modelName +'" label="' + modelDisplayName + '"/>';
+            }
+        }
     }
 }

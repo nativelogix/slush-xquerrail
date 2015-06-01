@@ -6,10 +6,7 @@
  * Licensed under the MIT license.
  */
 
-module.exports = function(gulp, common, install, conflict, template, rename, _, inflection, inquirer, path) {
-
-// var common = require('./common')(gulp);
-var path = require('path');
+module.exports = function(gulp, common, modules) {
 
 function format(string) {
     var username = string.toLowerCase();
@@ -17,19 +14,19 @@ function format(string) {
 }
 
 var defaults = (function () {
-    var workingDirName = path.basename(process.cwd()),
+    var workingDirName = modules.path.basename(process.cwd()),
       homeDir, osUserName, configFile, user;
 
     if (process.platform === 'win32') {
         homeDir = process.env.USERPROFILE;
-        osUserName = process.env.USERNAME || path.basename(homeDir).toLowerCase();
+        osUserName = process.env.USERNAME || modules.path.basename(homeDir).toLowerCase();
     }
     else {
         homeDir = process.env.HOME || process.env.HOMEPATH;
         osUserName = homeDir && homeDir.split('/').pop() || 'root';
     }
 
-    configFile = path.join(homeDir, '.gitconfig');
+    configFile = modules.path.join(homeDir, '.gitconfig');
     user = {};
 
     if (require('fs').existsSync(configFile)) {
@@ -88,26 +85,31 @@ gulp.task('default', function (done) {
         message: 'Continue?'
     }];
     //Ask
-    inquirer.prompt(prompts,
+    modules.inquirer.prompt(prompts,
         function (answers) {
             if (!answers.moveon) {
                 return done();
             }
-            answers.appNameSlug = _.slugify(answers.appName);
-            common.configuration.set('application:namespace', answers['xquerrailNamespace']);
-            common.configuration.set('application:collation', answers['xquerrailCollation']);
-            common.configuration.save(common.path);
+            answers.appNameSlug = modules['_.string'].slugify(answers.appName);
+            answers.common = common;
             gulp.src(__dirname + '/../templates/app/**')
-                .pipe(template(answers))
-                // .pipe(rename(function (file) {
-                //     if (file.basename[0] === '_') {
-                //         file.basename = '.' + file.basename.slice(1);
-                //     }
-                // }))
-                .pipe(conflict('./'))
+                .pipe(modules.template(answers))
+                .pipe(modules.gulpif(
+                    function(file) {return modules.path.basename(file.path) === 'application-domain.xml';}, 
+                    modules.inject(
+                        gulp.src(['./**/models/*-model.xqy'], {read: false}), {
+                            name: 'controllers',
+                            transform: common.domain.includeController
+                        }
+                    )
+                ))
+                .pipe(modules.conflict('./'))
                 .pipe(gulp.dest('./'))
-                .pipe(install())
+                .pipe(modules.install())
                 .on('end', function () {
+                    common.configuration.set('application:namespace', answers['xquerrailNamespace']);
+                    common.configuration.set('application:collation', answers['xquerrailCollation']);
+                    common.configuration.save();
                     done();
                 });
         });

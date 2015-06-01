@@ -43,6 +43,8 @@
     "slushgenerator"
   ],
   "devDependencies": {
+    "gulp-if": "^1.2.5",
+    "gulp-inject": "^1.2.0",
     "inflection": "^1.7.1",
     "nconf": "^0.7.1"
   }

@@ -8,19 +8,15 @@
 
 module.exports = function(gulp, common, modules) {
 
-gulp.task('controller', function (done) {
+gulp.task('model', function (done) {
     var modelName = this.args[0];
     if (!modelName) {
-        console.log('******    Incorrect usage of the sub-generator!!           ******');
-        console.log('******    Try slush xquerrail:controller <model-name>      ******');
-        console.log('******    Ex: slush xquerrail:controller article           ******');
+        console.log('******    Incorrect usage of the sub-generator!!      ******');
+        console.log('******    Try slush xquerrail:model <model-name>      ******');
+        console.log('******    Ex: slush xquerrail:model article           ******');
         return done();
     }
     var prompts = [{
-        type: 'confirm',
-        name: 'includeModel',
-        message: 'Import model module in controller?'
-    }, {
         type: 'confirm',
         name: 'moveon',
         message: 'Continue?'
@@ -28,19 +24,17 @@ gulp.task('controller', function (done) {
     //Ask
     modules.inquirer.prompt(prompts,
         function (answers) {
-            console.log(answers);
             if (!answers.moveon) {
                 return done();
             }
             answers.modelName = modelName;
-            answers.controllerName = inflection.pluralize(modelName);
-            answers.modelDisplayName = inflection.humanize(modelName);
+            answers.modelDisplayName = modules.inflection.humanize(modelName);
             answers.appNamespace = common.configuration.get('application:namespace');
-            gulp.src(__dirname + '/../templates/controller/**')
+            gulp.src(__dirname + '/../templates/model/**')
                 .pipe(modules.template(answers))
                 .pipe(modules.rename(function (file) {
-                    if (_.endsWith(modules.path.basename(file.basename), '-controller')) {
-                        file.basename = answers.controllerName + file.basename;
+                    if (modules['_.string'].endsWith(modules.path.basename(file.basename), '-model')) {
+                        file.basename = answers.modelName + file.basename;
                     }
                 }))
                 .pipe(modules.gulpif(
@@ -55,6 +49,10 @@ gulp.task('controller', function (done) {
                 .pipe(modules.conflict('./'))
                 .pipe(gulp.dest('./'))
                 .on('end', function () {
+                    var models = common.configuration.get('application:models') || [];
+                    models.push(answers.modelName);
+                    common.configuration.set('application:models', models);
+                    common.configuration.save();
                     done();
                 });
         });

@@ -1,6 +1,6 @@
 xquery version "1.0-ml";
 (:~
- : <%= modelDisplayName %> Controller
+ : Controller: <%= modelDisplayName %>
 ~:)
 module namespace controller = "<%= appNamespace %>/controllers/<%= controllerName %>";
 
@@ -10,6 +10,8 @@ import module namespace base = "http://xquerrail.com/controller/base" at "/main/
 <% if (includeModel) { %>
 import module namespace model = "<%= appNamespace %>/models/<%= modelName %>" at "/main/app/models/<%= modelName %>-model.xqy";
 <% } %>
+
+declare option xdmp:mapping "false";
 
 declare function controller:index()
 {
