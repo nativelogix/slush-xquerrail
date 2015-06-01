@@ -1,0 +1,4 @@
+<%= appNameSlug %>
+===================
+
+<%= appDescription %>

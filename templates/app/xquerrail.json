@@ -1,0 +1,6 @@
+{
+  "application": {
+    "namespace": "<%= xquerrailNamespace %>",
+    "collation": "<%= xquerrailCollation %>"
+  }
+}

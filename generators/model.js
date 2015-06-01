@@ -37,15 +37,6 @@ gulp.task('model', function (done) {
                         file.basename = answers.modelName + file.basename;
                     }
                 }))
-                .pipe(modules.gulpif(
-                    function(file) {return modules.path.basename(file.path) === 'application-domain.xml';}, 
-                    modules.inject(
-                        gulp.src(['./**/models/*-model.xqy'], {read: false}), {
-                            name: 'controllers',
-                            transform: common.domain.includeController
-                        }
-                    )
-                ))
                 .pipe(modules.conflict('./'))
                 .pipe(gulp.dest('./'))
                 .on('end', function () {
@@ -53,7 +44,22 @@ gulp.task('model', function (done) {
                     models.push(answers.modelName);
                     common.configuration.set('application:models', models);
                     common.configuration.save();
-                    done();
+                    common.domain.buildControllers(done);
+                    // done();
+                    // gulp.src('./src/**/application-domain.xml')
+                    //     .pipe(//modules.gulpif(
+                    //         //function(file) {return modules.path.basename(file.path) === 'application-domain.xml';}, 
+                    //         modules.inject(
+                    //             gulp.src(['./src/**/models/*-model.xqy'], {read: false}), {
+                    //                 name: 'controllers',
+                    //                 transform: common.domain.includeController
+                    //             }
+                    //         )
+                    //     )//)
+                    //     .pipe(gulp.dest('./src'))
+                    //     .on('end', function () {
+                    //         done();
+                    //     });
                 });
         });
     });

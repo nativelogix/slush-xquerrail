@@ -91,25 +91,12 @@ gulp.task('default', function (done) {
                 return done();
             }
             answers.appNameSlug = modules['_.string'].slugify(answers.appName);
-            answers.common = common;
             gulp.src(__dirname + '/../templates/app/**')
                 .pipe(modules.template(answers))
-                .pipe(modules.gulpif(
-                    function(file) {return modules.path.basename(file.path) === 'application-domain.xml';}, 
-                    modules.inject(
-                        gulp.src(['./**/models/*-model.xqy'], {read: false}), {
-                            name: 'controllers',
-                            transform: common.domain.includeController
-                        }
-                    )
-                ))
                 .pipe(modules.conflict('./'))
                 .pipe(gulp.dest('./'))
                 .pipe(modules.install())
                 .on('end', function () {
-                    common.configuration.set('application:namespace', answers['xquerrailNamespace']);
-                    common.configuration.set('application:collation', answers['xquerrailCollation']);
-                    common.configuration.save();
                     done();
                 });
         });
