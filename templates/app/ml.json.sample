@@ -1,0 +1,8 @@
+{
+  "ml" : {
+    "user": "admin",
+    "password": "xxxxx",
+    "host": "localhost",
+    "port": 9305
+  }
+}

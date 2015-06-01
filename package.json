@@ -1,0 +1,49 @@
+{
+  "name": "slush-xquerrail",
+  "description": "A slush generator for XQuerrail.Framework2",
+  "version": "0.1.0",
+  "homepage": "https://github.com/rlouapre/slush-xquerrail",
+  "author": {
+    "name": "Richard Louapre",
+    "email": "richard.louapre@marklogic.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rlouapre/slush-xquerrail.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rlouapre/slush-xquerrail/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/rlouapre/slush-xquerrail/blob/master/LICENSE"
+    }
+  ],
+  "main": "slushfile.js",
+  "engines": {
+    "node": ">= 0.10.26",
+    "npm": ">=1.4.3"
+  },
+  "scripts": {
+    "test": "echo \"No tests\""
+  },
+  "dependencies": {
+    "slush": ">=1.0.0",
+    "gulp": "^3.6.2",
+    "gulp-template": "^0.1.1",
+    "gulp-install": "^0.1.4",
+    "gulp-conflict": "^0.1.1",
+    "gulp-rename": "^1.2.0",
+    "underscore.string": "^2.3.3",
+    "inquirer": "^0.8.0",
+    "iniparser": "^1.0.5"
+  },
+  "keywords": [
+    "slushgenerator"
+  ],
+  "devDependencies": {
+    "inflection": "^1.7.1",
+    "nconf": "^0.7.1"
+  }
+}

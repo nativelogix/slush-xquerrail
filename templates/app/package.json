@@ -1,0 +1,16 @@
+{
+  "name": "<%= appNameSlug %>",
+  "version": "<%= appVersion %>",
+  "description": "<%= appDescription %>",
+  "devDependencies": {
+    "gulp-connect": "^2.0.6",
+    "gulp": "^3.8.6"
+  },
+  "xquerrail": {
+  	"application": {
+  		"namespace": "<%= xquerrailNamespace %>",
+  		"collation": "<%= xquerrailCollation %>",
+  		"models": []
+  	}
+  }
+}
