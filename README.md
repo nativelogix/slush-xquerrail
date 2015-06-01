@@ -1,4 +1,4 @@
-# Slush Xquerrail [![Build Status](https://secure.travis-ci.org/rlouapre/slush-xquerrail.png?branch=master)](https://travis-ci.org/rlouapre/slush-xquerrail) [![NPM version](https://badge-me.herokuapp.com/api/npm/slush-xquerrail.png)](http://badges.enytc.com/for/npm/slush-xquerrail)
+# Slush Xquerrail 
 
 > A slush generator for XQuerrail.Framework2
 
