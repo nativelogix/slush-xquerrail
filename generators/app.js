@@ -8,6 +8,13 @@
 
 module.exports = function(gulp, common, modules) {
 
+function validateNamespace(namespace) {
+    if (! modules['_.string'].contains(namespace, ':')) {
+        'Invalid namespace [' + namespace + ']. Must have the format prefix:namespace-uri';
+    } else
+        return true;
+};
+
 function format(string) {
     var username = string.toLowerCase();
     return username.replace(/\s/g, '');
@@ -33,24 +40,38 @@ var defaults = (function () {
         user = require('iniparser').parseSync(configFile).user;
     }
 
-    var xqNamespace, xqCollation;
-    xqNamespace = common.configuration.get('application:namespace') || 'http://xquerrail.com/app';
-    xqCollation = common.configuration.get('application:collation') || 'http://marklogic.com/collation/codepoint';
+    var xqApplicationNamespace, xqContentNamespace, xqCollation;
+    if (common.configuration.get('domain:applicationNamespace')) {
+        xqApplicationNamespace = common.configuration.get('domain:applicationNamespace').prefix + ':' + common.configuration.get('domain:applicationNamespace').uri;
+    } else {
+        xqApplicationNamespace = 'application:http://xquerrail.com/app';
+    }
+    
+    if (common.configuration.get('domain:contentNamespace')) {
+        xqContentNamespace = common.configuration.get('domain:contentNamespace').prefix + ':' + common.configuration.get('domain:contentNamespace').uri;
+    } else {
+        xqContentNamespace = 'content:http://xquerrail.com/app';
+    }
+
+    xqCollation = common.configuration.get('domain:collation') || 'http://marklogic.com/collation/codepoint';
 
     return {
         appName: workingDirName,
         userName: osUserName || format(user.name || ''),
         authorName: user.name || '',
         authorEmail: user.email || '',
-        xqNamespace: xqNamespace,
-        xqCollation: xqCollation
+        xquerrail: {
+            applicationNamespace: xqApplicationNamespace,
+            contentNamespace: xqContentNamespace,
+            collation: xqCollation
+        }
     };
 })();
 
 gulp.task('default', function (done) {
     var prompts = [{
         name: 'appName',
-        message: 'What is the name of your project?',
+        message: 'What is the name of your application?',
         default: defaults.appName
     }, {
         name: 'appDescription',
@@ -60,13 +81,19 @@ gulp.task('default', function (done) {
         message: 'What is the version of your project?',
         default: '0.1.0'
     }, {
-        name: 'xquerrailNamespace',
-        message: 'What is the application namespace of your project?',
-        default: defaults.xqNamespace
+        name: 'xquerrailApplicationNamespace',
+        message: 'What is the application namespace? Supported format {prefix}:{namespace}',
+        default: defaults.xquerrail.applicationNamespace,
+        validate: validateNamespace
+    }, {
+        name: 'xquerrailContentNamespace',
+        message: 'What is the content namespace? Supported format {prefix}:{namespace}',
+        default: defaults.xquerrail.contentNamespace,
+        validate: validateNamespace
     }, {
         name: 'xquerrailCollation',
         message: 'What is the application collation?',
-        default: defaults.xqCollation
+        default: defaults.xquerrail.collation
     }, {
         name: 'authorName',
         message: 'What is the author name?',
@@ -91,6 +118,19 @@ gulp.task('default', function (done) {
                 return done();
             }
             answers.appNameSlug = modules['_.string'].slugify(answers.appName);
+            answers.xquerrail = {};
+            answers.xquerrail.applicationNamespace = {
+                'prefix': answers.xquerrailApplicationNamespace.substring(0, answers.xquerrailApplicationNamespace.indexOf(':')),
+                'uri': answers.xquerrailApplicationNamespace.substring(answers.xquerrailApplicationNamespace.indexOf(':') + 1)
+            };
+            delete answers.xquerrailApplicationNamespace;
+            answers.xquerrail.contentNamespace = {
+                'prefix': answers.xquerrailContentNamespace.substring(0, answers.xquerrailContentNamespace.indexOf(':')),
+                'uri': answers.xquerrailContentNamespace.substring(answers.xquerrailContentNamespace.indexOf(':') + 1)
+            };
+            delete answers.xquerrailContentNamespace;
+            answers.xquerrail.collation = answers.xquerrailCollation;
+            delete answers.xquerrailCollation;
             gulp.src(__dirname + '/../templates/app/**')
                 .pipe(modules.template(answers))
                 .pipe(modules.conflict('./'))

@@ -1,7 +1,10 @@
 {
   "name": "main",
+  "description": "-",
   "version": "1.0.0",
   "dependencies": {
-    "xquerrail2.framework": "https://github.com/nativelogix/xquerrail2.framework/tarball/v0.0.11"
-  }
+    "xquerrail2.framework": "nativelogix/xquerrail2.framework"
+  },
+  "repository": {},
+  "license": "Apache-2.0"
 }

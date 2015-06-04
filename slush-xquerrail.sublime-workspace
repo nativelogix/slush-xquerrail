@@ -24,10 +24,18 @@
 			}
 		},
 		{
-			"file": "generators/controller.js",
+			"file": "/D/Projects/ml/gitlab/ml-test/roxy/deploy/ci.properties",
 			"settings":
 			{
-				"buffer_size": 2375,
+				"buffer_size": 118,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "templates/app/src/main/package.json",
+			"settings":
+			{
+				"buffer_size": 200,
 				"line_ending": "Unix"
 			}
 		},
@@ -40,26 +48,53 @@
 			}
 		},
 		{
-			"file": "generators/common.js",
+			"contents": "xquery version \"1.0-ml\";\n(:~\n : Model: Article\n~:)\nmodule namespace model = \"http://xquerrail.com/app/models/article\";\n\nimport module namespace domain = \"http://xquerrail.com/domain\" at \"/main/node_modules/xquerrail2.framework/dist/_framework/domain.xqy\";\nimport module namespace base = \"http://xquerrail.com/model/base\" at \"/main/node_modules/xquerrail2.framework/dist/_framework/base/base-model.xqy\";\n\ndeclare option xdmp:mapping \"false\";\n\ndeclare function model:model()\n{\n  domain:get-model(\"article\")\n};\n",
+			"file": "/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/models/article-model.xqy",
+			"file_size": 523,
+			"file_write_time": 130776630488817031,
 			"settings":
 			{
-				"buffer_size": 2248,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "templates/app/src/main/app/domains/application-domain.xml",
-			"settings":
-			{
-				"buffer_size": 1236,
+				"buffer_size": 508,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/domains/application-domain.xml",
+			"file": "generators/common.js",
 			"settings":
 			{
-				"buffer_size": 1301,
+				"buffer_size": 1702,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "templates/view/src/main/app/views/${modelName}/${controllerName}.${actionName}.xml.xqy",
+			"settings":
+			{
+				"buffer_size": 534,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "generators/view.js",
+			"settings":
+			{
+				"buffer_size": 1912,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "templates/view/src/main/app/views/${modelName}/${controllerName}.${actionName}.json.xqy",
+			"settings":
+			{
+				"buffer_size": 870,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Projects/ml/apa/trunk/marklogic/asc/src/main/app/views/templates/templates.list.json.xqy",
+			"settings":
+			{
+				"buffer_size": 2066,
 				"line_ending": "Windows"
 			}
 		},
@@ -67,16 +102,24 @@
 			"file": "generators/app.js",
 			"settings":
 			{
-				"buffer_size": 4139,
+				"buffer_size": 3194,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/D/Projects/ml/apa/trunk/marklogic/asc/src/main/app/domains/image-domain.xml",
+			"file": "templates/app/xquerrail.json",
 			"settings":
 			{
-				"buffer_size": 1612,
-				"line_ending": "Unix"
+				"buffer_size": 117,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/xquerrail.json",
+			"settings":
+			{
+				"buffer_size": 131,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -122,16 +165,34 @@
 	],
 	"file_history":
 	[
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/app/src/main/package.json",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/roxy/ml2.bat",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/roxy/node_modules/roxy-1.7.2/ml.bat",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/roxy/package.json",
+		"/D/Projects/ml/gitlab/ml-test/roxy/deploy/default.properties",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/domains/application-domain.xml",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/model/src/main/app/models/-model.xqy",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/gulpFile.js",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/app/package.json",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/generators/controller.js",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/controllers/articles-controller.xqy",
 		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/models/article-model.xqy",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/app/src/test/mocha/package.json",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/app/README.md",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/app/src/test/mocha/README.md",
+		"/C/Users/rlouapre/Documents/GitHub/xquerrail2.framework/package.json",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/package.json",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/xquerrail.json",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/app/src/main/app/domains/application-domain.xml",
+		"/D/Projects/ml/apa/trunk/marklogic/asc/src/main/app/domains/image-domain.xml",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/dist/app/domains/application-domain.xml",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/app/domains/application-domain.xml",
+		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/app/gulpFile.js",
 		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/controller/src/main/app/controllers/-controller.xqy",
 		"/D/Projects/ml/apa/trunk/marklogic/asc/src/main/app/models/template-model.xqy",
-		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/model/src/main/app/models/-model.xqy",
-		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/app/package.json",
-		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/domains/application-domain.xml",
 		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/README.md",
 		"/C/Users/rlouapre/Documents/GitHub/xquerrail2.framework/gulpfile.js",
 		"/D/Projects/ml/apa/trunk/marklogic/asc/src/main/app/domains/application-domain.xml",
-		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/xquerrail.json",
 		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/models/model1-model.xqy",
 		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/controllers/model1s-controller.xqy",
 		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/controllers/-controller.xqy",
@@ -144,8 +205,6 @@
 		"/D/Projects/ml/apa/trunk/marklogic/asc/src/main/app/controllers/tables-controller.xqy",
 		"/D/Projects/ts/helloworld/helloworld.sublime-project",
 		"/D/Projects/ts/helloworld/tsconfig.json",
-		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/package.json",
-		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/gulpFile.js",
 		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/app/.gitkeep",
 		"/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail/templates/gulpFile.js",
 		"/D/Projects/ts/helloworld/main.ts",
@@ -161,7 +220,6 @@
 		"/C/Users/rlouapre/AppData/Roaming/Sublime Text 3/Packages/User/TypeScript.sublime-build",
 		"/C/Users/rlouapre/Documents/GitHub/roxy/deploy/app_specific.rb",
 		"/C/ProgramData/VMware/vmnetdhcp.conf",
-		"/D/Projects/ml/gitlab/ml-test/roxy/deploy/default.properties",
 		"/C/Dev/mlcp/bin/mlcp.bat",
 		"/C/Users/rlouapre/Desktop/junk/test2.xml",
 		"/C/Windows/System32/drivers/etc/hosts",
@@ -202,6 +260,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"missingdeploy",
+			"roxy project",
+			"rubydeployer",
+			"ruby",
+			"rubydeployer",
+			"done",
 			"inflection",
 			"common",
 			"defaults",
@@ -237,7 +301,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -253,8 +317,8 @@
 						"selection":
 						[
 							[
-								740,
-								740
+								586,
+								594
 							]
 						],
 						"settings":
@@ -262,44 +326,70 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 36.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "generators/controller.js",
+					"file": "/D/Projects/ml/gitlab/ml-test/roxy/deploy/ci.properties",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2375,
+						"buffer_size": 118,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1722,
-								1722
+								110,
+								110
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Java/JavaProperties.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 434.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "templates/app/src/main/package.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 200,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								196,
+								196
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 3,
 					"file": "generators/model.js",
 					"semi_transient": false,
 					"settings":
@@ -311,8 +401,8 @@
 						"selection":
 						[
 							[
-								1859,
-								1859
+								1257,
+								1238
 							]
 						],
 						"settings":
@@ -322,27 +412,55 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 378.0,
+						"translation.y": 108.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "generators/common.js",
+					"buffer": 4,
+					"file": "/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/models/article-model.xqy",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2248,
+						"buffer_size": 508,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1602,
-								1618
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MarkLogic/xquery_language/xquery-ml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "generators/common.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1702,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								954,
+								954
 							]
 						],
 						"settings":
@@ -352,32 +470,60 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 162.0,
+						"translation.y": 74.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "templates/view/src/main/app/views/${modelName}/${controllerName}.${actionName}.xml.xqy",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 534,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								525,
+								525
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MarkLogic/xquery_language/xquery-ml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "templates/app/src/main/app/domains/application-domain.xml",
+					"buffer": 7,
+					"file": "generators/view.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1236,
+						"buffer_size": 1912,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1198,
-								1198
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/XML/XML.tmLanguage",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
@@ -389,50 +535,78 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/src/main/app/domains/application-domain.xml",
+					"buffer": 8,
+					"file": "templates/view/src/main/app/views/${modelName}/${controllerName}.${actionName}.json.xqy",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1301,
+						"buffer_size": 870,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1235,
-								1235
+								0,
+								870
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/XML/XML.tmLanguage",
-							"tab_size": 4,
+							"syntax": "Packages/MarkLogic/xquery_language/xquery-ml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/D/Projects/ml/apa/trunk/marklogic/asc/src/main/app/views/templates/templates.list.json.xqy",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2066,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								937,
+								26
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MarkLogic/xquery_language/xquery-ml.tmLanguage",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 10,
 					"file": "generators/app.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4139,
+						"buffer_size": 3194,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4059,
-								4059
+								2627,
+								2635
 							]
 						],
 						"settings":
@@ -442,40 +616,68 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1350.0,
+						"translation.y": 918.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "/D/Projects/ml/apa/trunk/marklogic/asc/src/main/app/domains/image-domain.xml",
+					"buffer": 11,
+					"file": "templates/app/xquerrail.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1612,
+						"buffer_size": 117,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1468,
-								1529
+								81,
+								81
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/XML/XML.tmLanguage",
-							"tab_size": 4,
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/C/Users/rlouapre/Documents/GitHub/rlouapre/slush-xquerrail-test/xquerrail.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 131,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
 					"type": "text"
 				}
 			]

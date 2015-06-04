@@ -8,18 +8,23 @@
 
 module.exports = function(gulp, common, modules) {
 
-gulp.task('controller', function (done) {
+gulp.task('view', function (done) {
     var modelName = this.args[0];
     if (!modelName) {
-        console.log('******    Incorrect usage of the sub-generator!!           ******');
-        console.log('******    Try slush xquerrail:controller <model-name>      ******');
-        console.log('******    Ex: slush xquerrail:controller article           ******');
+        console.log('******    Incorrect usage of the sub-generator!!     ******');
+        console.log('******    Try slush xquerrail:view <model-name>      ******');
+        console.log('******    Ex: slush xquerrail:view article           ******');
         return done();
     }
     var prompts = [{
-        type: 'confirm',
-        name: 'includeModel',
-        message: 'Import model module in controller?'
+        type: 'input',
+        name: 'actionName',
+        message: 'Action name in view?'
+    }, {
+        type: 'list',
+        name: 'viewFormat',
+        message: 'Format in view?',
+        choices: ['xml', 'json']
     }, {
         type: 'confirm',
         name: 'moveon',
@@ -32,22 +37,22 @@ gulp.task('controller', function (done) {
             if (!answers.moveon) {
                 return done();
             }
-            answers.modelName = modelName;
-            answers.controllerName = modules.inflection.pluralize(modelName);
-            answers.modelDisplayName = modules.inflection.humanize(modelName);
-            answers.appNamespace = common.configuration.get('application:namespace');
-            gulp.src(__dirname + '/../templates/controller/**')
-                .pipe(modules.template(answers))
-                .pipe(modules.rename(function (file) {
-                    if (modules['_.string'].endsWith(modules.path.basename(file.basename), '-controller')) {
-                        file.basename = answers.controllerName + file.basename;
-                    }
-                }))
-                .pipe(modules.conflict('./'))
-                .pipe(gulp.dest('./'))
-                .on('end', function () {
-                    done();
-                });
+            // answers.modelName = modelName;
+            // answers.controllerName = modules.inflection.pluralize(modelName);
+            // answers.modelDisplayName = modules.inflection.humanize(modelName);
+            // answers.appNamespace = common.configuration.get('application:namespace');
+            // gulp.src(__dirname + '/../templates/controller/**')
+            //     .pipe(modules.template(answers))
+            //     .pipe(modules.rename(function (file) {
+            //         if (modules['_.string'].endsWith(modules.path.basename(file.basename), '-controller')) {
+            //             file.basename = answers.controllerName + file.basename;
+            //         }
+            //     }))
+            //     .pipe(modules.conflict('./'))
+            //     .pipe(gulp.dest('./'))
+            //     .on('end', function () {
+            //         done();
+            //     });
         });
     });
     return gulp;

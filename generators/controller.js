@@ -18,7 +18,7 @@ gulp.task('controller', function (done) {
     }
     var prompts = [{
         type: 'confirm',
-        name: 'includeModel',
+        name: 'controllerIncludeModel',
         message: 'Import model module in controller?'
     }, {
         type: 'confirm',

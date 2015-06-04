@@ -1,6 +1,7 @@
 {
-  "application": {
-    "namespace": "<%= xquerrailNamespace %>",
-    "collation": "<%= xquerrailCollation %>"
+  "domain": {
+    "applicationNamespace": <%= JSON.stringify(xquerrail.applicationNamespace) %>,
+    "contentNamespace": <%= JSON.stringify(xquerrail.contentNamespace) %>,
+    "collation": "<%= xquerrail.collation %>"
   }
 }

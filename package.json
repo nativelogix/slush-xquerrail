@@ -45,7 +45,10 @@
   "devDependencies": {
     "gulp-if": "^1.2.5",
     "gulp-inject": "^1.2.0",
+    "gulp-inject-string": "0.0.2",
     "inflection": "^1.7.1",
-    "nconf": "^0.7.1"
+    "lodash": "^3.9.3",
+    "nconf": "^0.7.1",
+    "xml2js": "^0.4.9"
   }
 }

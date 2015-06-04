@@ -3,4 +3,5 @@
     xmlns:search = "http://marklogic.com/appservices/search"
     xsi:schemaLocation="http://xquerrail.com/domain https://raw.githubusercontent.com/nativelogix/xquerrail2.framework/master/src/main/_framework/schemas/domain.xsd">
   <name>content</name>
+  <!-- model -->
 </domain>
