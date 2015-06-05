@@ -7,14 +7,16 @@
         "namespace": <%= JSON.stringify(xquerrail.applicationNamespace) %>,
         "controllers": [],
         "models": [],
-        "views": []
+        "views": [],
+        "optionlists": []
       },
       {
         "name": "content",
         "namespace": <%= JSON.stringify(xquerrail.contentNamespace) %>,
         "controllers": [],
         "models": [],
-        "views": []
+        "views": [],
+        "optionlists": []
       }
     ]
   }

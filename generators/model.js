@@ -20,14 +20,6 @@ var validateAndCapture = function(input, key) {
     return required;
 };
 
-// function validateRequired(input) {
-//     if (!input) {
-//         return 'Input is required.';
-//     } else {
-//         return true;
-//     }
-// };
-
 function validateModelName(input) {
     var required = common.validation.required(input);
     if (required === true) {

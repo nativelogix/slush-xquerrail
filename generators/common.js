@@ -279,11 +279,6 @@ module.exports = function(gulp, modules) {
                 action.formats.push(answers.viewFormat);
             }
         }
-        // if (views[answers.controllerName]) {
-        //     views[answers.controllerName].push(answers.actionName);
-        // } else {
-        //     views[answers.controllerName] = [answers.actionName];
-        // }
         domain.views = views;
         _configuration.set('application:domains', domains);
         _configuration.save();
@@ -298,6 +293,49 @@ module.exports = function(gulp, modules) {
             extensions.push(path.extname(path.basename(file, path.extname(file))).substring(1));
         })
         return extensions;
+    };
+
+    var buildOptionListXml = function(answers) {
+        var optionlist = {'$': {}, 'option': []};
+        optionlist['$']['name'] = answers.optionListName;
+        answers.optionListValues.forEach(function(value) {
+            optionlist['option'].push(value);
+        });
+        return new xml2js.Builder({'rootName': 'optionlist', 'headless': true}).buildObject(optionlist);
+    };
+
+    var buildOptionListDefinition = function(answers, cb) {
+        var path = './src/main/*/domains/' + answers.domainName + '-domain.xml';
+        gulp
+            .src(path)
+            .pipe(
+                modules['inject-string'].after(
+                    '<!-- optionlists -->',
+                    '\n' + buildOptionListXml(answers) + '\n'
+                )
+            )
+            .pipe(gulp.dest(function(file) {
+                return file.base;
+            }))
+            .on('end', function () {
+                if (cb) cb();
+            });
+    };
+
+    var updateOptionListConfiguration = function (answers, cb) {
+        var domains = _configuration.get('application:domains');
+        var domain;
+        domains.forEach(function(d){
+            if (d.name === answers.domainName) {
+                domain = d;
+            }
+        });
+        var optionlists = domain.optionlists || [];
+        optionlists.push(answers.optionListName);
+        domain.optionlists = optionlists;
+        _configuration.set('application:domains', domains);
+        _configuration.save();
+        if (cb) cb();
     };
 
     return {
@@ -381,6 +419,21 @@ module.exports = function(gulp, modules) {
                         answers, 
                         function() {
                             updateViewConfiguration(
+                                answers,
+                                function() {
+                                    if (cb) cb();
+                                }
+                            )
+                        }
+                    )
+                }
+            },
+            "optionlist": {
+                "build": function(answers, cb) {
+                    buildOptionListDefinition(
+                        answers,
+                        function() {
+                            updateOptionListConfiguration(
                                 answers,
                                 function() {
                                     if (cb) cb();

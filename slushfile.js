@@ -32,3 +32,4 @@ gulp = require('./generators/app')(gulp, common, modules);
 gulp = require('./generators/controller')(gulp, common, modules);
 gulp = require('./generators/model')(gulp, common, modules);
 gulp = require('./generators/view')(gulp, common, modules);
+gulp = require('./generators/optionlist')(gulp, common, modules);

@@ -1,13 +1,13 @@
 <domain xmlns="http://xquerrail.com/domain"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xquerrail.com/domain https://raw.githubusercontent.com/nativelogix/xquerrail2.framework/master/src/main/_framework/schemas/domain.xsd">
-    <name><%= appName %></name>
+	<name><%= appName %></name>
     <application-namespace prefix="<%= xquerrail.applicationNamespace.prefix %>" namespace-uri="<%= xquerrail.applicationNamespace.uri %>"/>
     <content-namespace prefix="<%= xquerrail.contentNamespace.prefix %>" namespace-uri="<%= xquerrail.contentNamespace.uri %>"/>
     <default-collation><%= xquerrail.collation %></default-collation>
-    
-    <!-- models -->
+  <!-- models -->
 
-    <!-- controllers -->
+  <!-- optionlists -->
 
+  <!-- controllers -->
 </domain>
