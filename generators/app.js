@@ -8,9 +8,13 @@
 
 module.exports = function(gulp, common, modules) {
 
+var COLLATION = 'http://marklogic.com/collation/codepoint';
+var APPLICATION_NAMESPACE = 'application:http://xquerrail.com/application';
+var CONTENT_NAMESPACE = 'content:http://xquerrail.com/content';
+
 function validateNamespace(namespace) {
     if (! modules['_.string'].contains(namespace, ':')) {
-        'Invalid namespace [' + namespace + ']. Must have the format prefix:namespace-uri';
+        return 'Invalid namespace [' + namespace + ']. Must have the format prefix:namespace-uri';
     } else
         return true;
 };
@@ -40,20 +44,20 @@ var defaults = (function () {
         user = require('iniparser').parseSync(configFile).user;
     }
 
-    var xqApplicationNamespace, xqContentNamespace, xqCollation;
-    if (common.configuration.get('domain:applicationNamespace')) {
-        xqApplicationNamespace = common.configuration.get('domain:applicationNamespace').prefix + ':' + common.configuration.get('domain:applicationNamespace').uri;
+    var applicationNamespace, contentNamespace, collation;
+    if (common.configuration.get('application:domains:application:namespace')) {
+        applicationNamespace = common.configuration.get('application:domains:application:namespace').prefix + ':' + common.configuration.get('application:domains:application:namespace').uri;
     } else {
-        xqApplicationNamespace = 'application:http://xquerrail.com/app';
+        applicationNamespace = APPLICATION_NAMESPACE;
     }
     
-    if (common.configuration.get('domain:contentNamespace')) {
-        xqContentNamespace = common.configuration.get('domain:contentNamespace').prefix + ':' + common.configuration.get('domain:contentNamespace').uri;
+    if (common.configuration.get('application:domains:content:namespace')) {
+        contentNamespace = common.configuration.get('application:domains:content:namespace').prefix + ':' + common.configuration.get('application:domains:content:namespace').uri;
     } else {
-        xqContentNamespace = 'content:http://xquerrail.com/app';
+        contentNamespace = CONTENT_NAMESPACE;
     }
 
-    xqCollation = common.configuration.get('domain:collation') || 'http://marklogic.com/collation/codepoint';
+    collation = common.configuration.get('application:collation') || COLLATION;
 
     return {
         appName: workingDirName,
@@ -61,9 +65,9 @@ var defaults = (function () {
         authorName: user.name || '',
         authorEmail: user.email || '',
         xquerrail: {
-            applicationNamespace: xqApplicationNamespace,
-            contentNamespace: xqContentNamespace,
-            collation: xqCollation
+            applicationNamespace: applicationNamespace,
+            contentNamespace: contentNamespace,
+            collation: collation
         }
     };
 })();

@@ -1,7 +1,21 @@
 {
-  "domain": {
-    "applicationNamespace": <%= JSON.stringify(xquerrail.applicationNamespace) %>,
-    "contentNamespace": <%= JSON.stringify(xquerrail.contentNamespace) %>,
-    "collation": "<%= xquerrail.collation %>"
+  "application": {
+    "collation": "<%= xquerrail.collation %>",
+    "domains": [
+      {
+        "name": "application",
+        "namespace": <%= JSON.stringify(xquerrail.applicationNamespace) %>,
+        "controllers": [],
+        "models": [],
+        "views": []
+      },
+      {
+        "name": "content",
+        "namespace": <%= JSON.stringify(xquerrail.contentNamespace) %>,
+        "controllers": [],
+        "models": [],
+        "views": []
+      }
+    ]
   }
 }

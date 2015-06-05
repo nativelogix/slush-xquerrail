@@ -9,17 +9,78 @@
 module.exports = function(gulp, common, modules) {
 
 gulp.task('controller', function (done) {
-    var modelName = this.args[0];
-    if (!modelName) {
-        console.log('******    Incorrect usage of the sub-generator!!           ******');
-        console.log('******    Try slush xquerrail:controller <model-name>      ******');
-        console.log('******    Ex: slush xquerrail:controller article           ******');
-        return done();
-    }
+    function validateRequired(input) {
+        if (!input) {
+            return 'Input is required.';
+        } else {
+            return true;
+        }
+    };
+
+    function listModelNames(answers) {
+        var models = common.configuration.get('domain:models').slice(0);
+        models.unshift('');
+        return models;
+    };
+
+    function showModelList(answers) {
+        return answers['controllerIncludeModel'];
+    };
+
+    function showControllerName(answers) {
+        return !answers['controllerIncludeModel'];
+    };
+    
+    function validateControllerName(input) {
+        var required = validateRequired(input);
+        if (required === true) {
+            if (modules['_.string'].contains(common.configuration.get('domain:controllers'), input)) {
+                return 'Controller name must be unique.'
+            } else {
+                return true
+            }
+        } else {
+            return required;
+        }
+    };
+
+    function showControllerFunctions(answers) {
+        return answers['controllerOverrideFunctions'];
+    };
+
     var prompts = [{
+        name: 'domainName',
+        type: 'list',
+        message: 'What is the domain model?',
+        choices: common.domain.list,
+        default: 'content',
+        when: function() {return false;},
+        validate: validateRequired
+    }, {
         type: 'confirm',
         name: 'controllerIncludeModel',
         message: 'Import model module in controller?'
+    }, {
+        type: 'list',
+        name: 'modelName',
+        choices: listModelNames,
+        message: 'Model name?',
+        when: showModelList
+    }, {
+        name: 'controllerName',
+        message: 'Controller name?',
+        when: showControllerName,
+        validate: validateControllerName
+    }, {
+        type: 'confirm',
+        name: 'controllerOverrideFunctions',
+        message: 'Override functions?'
+    }, {
+        type: 'checkbox',
+        name: 'controllerFunctions',
+        choices: common.domain.controller.functions,
+        message: 'Select function to override?',
+        when: showControllerFunctions
     }, {
         type: 'confirm',
         name: 'moveon',
@@ -32,22 +93,18 @@ gulp.task('controller', function (done) {
             if (!answers.moveon) {
                 return done();
             }
-            answers.modelName = modelName;
-            answers.controllerName = modules.inflection.pluralize(modelName);
-            answers.modelDisplayName = modules.inflection.humanize(modelName);
-            answers.appNamespace = common.configuration.get('application:namespace');
-            gulp.src(__dirname + '/../templates/controller/**')
-                .pipe(modules.template(answers))
-                .pipe(modules.rename(function (file) {
-                    if (modules['_.string'].endsWith(modules.path.basename(file.basename), '-controller')) {
-                        file.basename = answers.controllerName + file.basename;
-                    }
-                }))
-                .pipe(modules.conflict('./'))
-                .pipe(gulp.dest('./'))
-                .on('end', function () {
-                    done();
-                });
+            if (!answers.domainName) {
+                answers.domainName = 'content';
+            }
+            if (answers.modelName) {
+                answers.controllerName = modules.inflection.pluralize(answers.modelName);
+                answers.modelDisplayName = modules.inflection.humanize(answers.modelName);
+            }
+            answers.controllerNamespace = common.domain.find(answers.domainName).namespace.uri;
+            common.domain.controller.build(
+                answers,
+                done
+            );
         });
     });
     return gulp;

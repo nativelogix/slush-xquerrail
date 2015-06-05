@@ -8,18 +8,31 @@
 
 module.exports = function(gulp, common, modules) {
 
-function validateRequired(input) {
-    if (!input) {
-        return 'Input is required.';
-    } else {
-        return true;
-    }
+var _answers = {
+    'domainName': common.domain.default
 };
 
-function validateModelName(input) {
-    var required = validateRequired(input);
+var validateAndCapture = function(input, key) {
+    var required = common.validation.required(input);
     if (required === true) {
-        if (modules['_.string'].contains(common.configuration.get('domain:models'), input)) {
+        _answers[key] = input
+    }
+    return required;
+};
+
+// function validateRequired(input) {
+//     if (!input) {
+//         return 'Input is required.';
+//     } else {
+//         return true;
+//     }
+// };
+
+function validateModelName(input) {
+    var required = common.validation.required(input);
+    if (required === true) {
+        var domain = common.domain.find(_answers['domainName'])
+        if (modules['_.string'].contains(domain.models, input)) {
             return 'Model name must be unique.'
         } else {
             return true
@@ -43,6 +56,14 @@ function defaultControllerName(answers) {
 
 gulp.task('model', function (done) {
     var prompts = [{
+        name: 'domainName',
+        type: 'list',
+        message: 'What is the domain model?',
+        choices: common.domain.list,
+        default: common.domain.default,
+        when: function() {return false;},
+        validate: common.validation.required
+    }, {
         name: 'modelName',
         type: 'input',
         message: 'What is the model name?',
@@ -60,8 +81,8 @@ gulp.task('model', function (done) {
         name: 'modelNamespace',
         type: 'list',
         message: 'What is the model namespace?',
-        choices: [common.configuration.get('domain:applicationNamespace:uri'), common.configuration.get('domain:contentNamespace:uri')],
-        default: common.configuration.get('domain:contentNamespace:uri')
+        choices: common.domain.namespaces,
+        default: common.domain.namespaces()[1]
     }, {
         name: 'modelCollation',
         message: 'What is the model collation?',
@@ -69,19 +90,19 @@ gulp.task('model', function (done) {
     }, {
         name: 'modelFields',
         message: 'List the field names (comma separated)?',
-        validate: validateRequired
+        validate: common.validation.required
     }, {
         name: 'modelKey',
         type: 'list',
         message: 'What is the key field?',
         choices: listFields,
-        validate: validateRequired
+        validate: common.validation.required
     }, {
         name: 'modelKeyLabel',
         type: 'list',
         message: 'What is the key label field?',
         choices: listFields,
-        validate: validateRequired
+        validate: common.validation.required
     }, {
         name: 'controllerIncludeModel',
         type: 'confirm',
@@ -99,29 +120,28 @@ gulp.task('model', function (done) {
     //Ask
     modules.inquirer.prompt(prompts,
         function (answers) {
+            console.log(answers);
             if (!answers.moveon) {
                 return done();
             }
+            if (!answers.domainName) {
+                answers.domainName = 'content';
+            }
             answers.modelFields = listFields(answers);
             answers.modelDisplayName = modules.inflection.humanize(answers.modelName);
-            common.domain.addModelFile(
-                answers,
+            answers.controllerNamespace = answers.modelNamespace;
+            answers.controllerFunctions = [];
+            common.domain.model.build(
+                answers, 
                 function() {
-                    common.domain.buildModel(
-                        answers, 
-                        function() {
-                            if (answers.controllerIncludeModel) {
-                                common.domain.addControllerFile(
-                                    answers, 
-                                    common.domain.addModelToConfiguration(answers, done)
-                                )
-                            } else {
-                                common.domain.addModelToConfiguration(answers, done);
-                            }
-                        }
-                    )
+                    if (answers.controllerIncludeModel) {
+                        common.domain.controller.build(
+                            answers,
+                            done
+                        )
+                    }
                 }
-            );
+            )
         });
     });
     return gulp;

@@ -1,6 +1,6 @@
 xquery version "1.0-ml";
 (:~
- : XML View: <%= modelDisplayName %>
+ : XML View: 
 ~:)
 
 import module namespace response = "http://xquerrail.com/response" at "/main/node_modules/xquerrail2.framework/dist/_framework/response.xqy";
@@ -12,5 +12,5 @@ response:initialize($response),
 let $node := response:body()
 return
   if($node) then
-  	<response><%= modelName %></response>
+  	<response></response>
   else ()
