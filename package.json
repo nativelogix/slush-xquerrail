@@ -30,28 +30,28 @@
   },
   "dependencies": {
     "slush": ">=1.0.0",
+    "glob": "^5.0.10",
     "gulp": "^3.6.2",
     "gulp-template": "^0.1.1",
+    "gulp-if": "^1.2.5",
+    "gulp-inject": "^1.2.0",
+    "gulp-inject-string": "0.0.2",
     "gulp-install": "^0.1.4",
     "gulp-conflict": "^0.1.1",
     "gulp-rename": "^1.2.0",
     "underscore.string": "^2.3.3",
-    "inquirer": "^0.8.0",
-    "iniparser": "^1.0.5"
-  },
-  "keywords": [
-    "slushgenerator"
-  ],
-  "devDependencies": {
-    "glob": "^5.0.10",
-    "gulp-if": "^1.2.5",
-    "gulp-inject": "^1.2.0",
-    "gulp-inject-string": "0.0.2",
     "inflection": "^1.7.1",
+    "inquirer": "^0.8.0",
     "lodash": "^3.9.3",
+    "iniparser": "^1.0.5",
     "nconf": "^0.7.1",
     "xml2js": "^0.4.9",
     "xmldom": "^0.1.19",
     "xpath": "0.0.9"
-  }
+  },
+  "keywords": [
+    "slushgenerator",
+    "xquerrail",
+    "marklogic"
+  ]
 }
