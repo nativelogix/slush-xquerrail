@@ -8,8 +8,11 @@
 
 module.exports = function(gulp, modules) {
 
+    var XQUERRAIL_VERSION = "0.0.11";
+    var ROXY_VERSION = "1.7.2";
     var DEFAULT_DOMAIN = 'content';
-    var PATH = './xquerrail.json';
+    var XQUERRAIL_JSON = './xquerrail.json';
+    var PACKAGE_JSON = './package.json';
     var TYPE_MAPPINGS = {
         "s": "string",
         "dc": "decimal",
@@ -58,7 +61,15 @@ module.exports = function(gulp, modules) {
         dom = require('xmldom').DOMParser
         xml2js = require('xml2js');
     var builder = new xml2js.Builder();
-    var _configuration = nconf.file(PATH);
+    var _configuration = nconf.file(XQUERRAIL_JSON);
+    var _package = undefined;
+
+    try {
+      // _package = require(PACKAGE_JSON);
+      _package = JSON.parse(fs.readFileSync(PACKAGE_JSON));
+    } catch (e) {
+        console.error(e);
+    }
 
     var buildControllerXml = function(answers) {
         var controller = {'$': {}};
@@ -339,6 +350,7 @@ module.exports = function(gulp, modules) {
     };
 
     return {
+        "package": _package,
         "configuration": _configuration,
         "domain": {
             "default": DEFAULT_DOMAIN,
@@ -450,6 +462,26 @@ module.exports = function(gulp, modules) {
                     return 'Input is required.';
                 } else {
                     return true;
+                }
+            }
+        },
+        "dependencies": {
+            "roxy": {
+                "install": function(answers, cb) {
+                    console.log('installRoxy: ' + answers.installRoxy);
+                    if (answers.installRoxy) {
+                        var Download = require('download');
+                        new Download({mode: '755', extract:true, strip:1})
+                            .get('https://github.com/marklogic/roxy/releases/download/v' + ROXY_VERSION + '/roxy-' + ROXY_VERSION + '.zip')
+                            .dest('./roxy')
+                            .run(
+                                function() {
+                                    if (cb) cb();
+                                }
+                            );
+                    } else {
+                        if (cb) cb();
+                    }
                 }
             }
         }

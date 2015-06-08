@@ -24,9 +24,13 @@ function format(string) {
     return username.replace(/\s/g, '');
 }
 
+function isRoxyInstalled(answers) {
+    return answers['installRoxy'];
+};
+
 var defaults = (function () {
     var workingDirName = modules.path.basename(process.cwd()),
-      homeDir, osUserName, configFile, user;
+      homeDir, appDescription, osUserName, configFile, user;
 
     if (process.platform === 'win32') {
         homeDir = process.env.USERPROFILE;
@@ -44,15 +48,25 @@ var defaults = (function () {
         user = require('iniparser').parseSync(configFile).user;
     }
 
-    var applicationNamespace, contentNamespace, collation;
-    if (common.configuration.get('application:domains:application:namespace')) {
-        applicationNamespace = common.configuration.get('application:domains:application:namespace').prefix + ':' + common.configuration.get('application:domains:application:namespace').uri;
+    var applicationNamespace, contentNamespace, collation, domain, package;
+    package = common.package;
+
+    if (package) {
+        appDescription = common.package.description;
+    } else {
+        appDescription = '';
+    }
+
+    domain = common.domain.find('application');
+    if (domain) {
+        applicationNamespace = domain.namespace.prefix + ':' + domain.namespace.uri;
     } else {
         applicationNamespace = APPLICATION_NAMESPACE;
     }
     
-    if (common.configuration.get('application:domains:content:namespace')) {
-        contentNamespace = common.configuration.get('application:domains:content:namespace').prefix + ':' + common.configuration.get('application:domains:content:namespace').uri;
+    domain = common.domain.find('content');
+    if (domain) {
+        contentNamespace = domain.namespace.prefix + ':' + domain.namespace.uri;
     } else {
         contentNamespace = CONTENT_NAMESPACE;
     }
@@ -61,6 +75,7 @@ var defaults = (function () {
 
     return {
         appName: workingDirName,
+        appDescription: appDescription,
         userName: osUserName || format(user.name || ''),
         authorName: user.name || '',
         authorEmail: user.email || '',
@@ -79,7 +94,8 @@ gulp.task('default', function (done) {
         default: defaults.appName
     }, {
         name: 'appDescription',
-        message: 'What is the description?'
+        message: 'What is the description?',
+        default: defaults.appDescription
     }, {
         name: 'appVersion',
         message: 'What is the version of your project?',
@@ -98,6 +114,19 @@ gulp.task('default', function (done) {
         name: 'xquerrailCollation',
         message: 'What is the application collation?',
         default: defaults.xquerrail.collation
+    }, {
+        type: 'confirm',
+        name: 'installRoxy',
+        message: 'Install Roxy?'
+    }, {
+        name: 'appName',
+        message: 'Application name?',
+        default: defaults.appName,
+        when: isRoxyInstalled
+    }, {
+        name: 'appPort',
+        message: 'Application port?',
+        when: isRoxyInstalled
     }, {
         name: 'authorName',
         message: 'What is the author name?',
@@ -135,14 +164,19 @@ gulp.task('default', function (done) {
             delete answers.xquerrailContentNamespace;
             answers.xquerrail.collation = answers.xquerrailCollation;
             delete answers.xquerrailCollation;
-            gulp.src(__dirname + '/../templates/app/**')
-                .pipe(modules.template(answers))
-                .pipe(modules.conflict('./'))
-                .pipe(gulp.dest('./'))
-                .pipe(modules.install())
-                .on('end', function () {
-                    done();
-                });
+            common.dependencies.roxy.install(
+                answers,
+                function() {
+                    gulp.src(__dirname + '/../templates/app/**')
+                        .pipe(modules.template(answers))
+                        .pipe(modules.conflict('./'))
+                        .pipe(gulp.dest('./'))
+                        .pipe(modules.install())
+                        .on('end', function () {
+                            done();
+                        });
+                }
+            );
         });
 });
   return gulp;

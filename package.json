@@ -53,5 +53,8 @@
     "slushgenerator",
     "xquerrail",
     "marklogic"
-  ]
+  ],
+  "devDependencies": {
+    "download": "^4.1.2"
+  }
 }

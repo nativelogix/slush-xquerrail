@@ -3,8 +3,17 @@
   "version": "<%= appVersion %>",
   "description": "<%= appDescription %>",
   "devDependencies": {
+    "event-stream": "^3.3.1",
+    "gulp": "^3.8.6",
     "gulp-connect": "^2.0.6",
-    "gulp": "^3.8.6"
+    "gulp-install": "^0.4.0",
+    "gulp-mocha": "^2.1.1",
+    "gulp-shell": "^0.4.2",
+    "gulp-util": "^3.0.5",
+    "gulp-watch": "^4.2.4",
+    "gulp-xray-runner": "https://github.com/rlouapre/gulp-xray-runner/tarball/v0.0.3",
+    "run-sequence": "^1.1.0",
+    "yargs": "^3.10.0"
   },
   "repository": {
   },

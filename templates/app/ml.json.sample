@@ -4,5 +4,9 @@
     "password": "xxxxx",
     "host": "localhost",
     "port": 9305
+  },
+  "roxy" : {
+  	"base": "./roxy",
+  	"environment": "local"
   }
 }
