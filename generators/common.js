@@ -145,9 +145,9 @@ module.exports = function(gulp, modules) {
         var model = {'$': {}, 'element': []};
         model['$']['name'] = answers.modelName;
         model['$']['persistence'] = answers.modelPersistence;
-        if (answers.modelPersistence !== 'directory') {
+        if (answers.modelPersistence === 'directory') {
             model[answers.modelPersistence] = '/' + answers.modelName + '/';
-        } else if (answers.modelPersistence !== 'document') {
+        } else if (answers.modelPersistence === 'document') {
             model[answers.modelPersistence] = '/' + answers.modelName + '.xml';
         }
         model['$']['label'] = answers.modelDisplayName;
