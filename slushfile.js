@@ -29,6 +29,7 @@ var common = require('./generators/common')(gulp, modules);
 
 // load generators
 gulp = require('./generators/app')(gulp, common, modules);
+gulp = require('./generators/roxy')(gulp, common, modules);
 gulp = require('./generators/controller')(gulp, common, modules);
 gulp = require('./generators/model')(gulp, common, modules);
 gulp = require('./generators/view')(gulp, common, modules);

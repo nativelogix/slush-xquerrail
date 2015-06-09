@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "slush": ">=1.0.0",
+    "download": "^4.1.2",
     "glob": "^5.0.10",
     "gulp": "^3.6.2",
     "gulp-template": "^0.1.1",
@@ -53,8 +54,5 @@
     "slushgenerator",
     "xquerrail",
     "marklogic"
-  ],
-  "devDependencies": {
-    "download": "^4.1.2"
-  }
+  ]
 }
