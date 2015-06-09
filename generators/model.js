@@ -74,7 +74,8 @@ gulp.task('model', function (done) {
         type: 'list',
         message: 'What is the model namespace?',
         choices: common.domain.namespaces,
-        default: common.domain.namespaces()[1]
+        when: function() {return false;},
+        default: common.domain.find('application').namespace.uri
     }, {
         name: 'modelCollation',
         message: 'What is the model collation?',
@@ -118,6 +119,9 @@ gulp.task('model', function (done) {
             }
             if (!answers.domainName) {
                 answers.domainName = 'content';
+            }
+            if (!answers.modelNamespace) {
+                answers.modelNamespace = common.domain.find('application').namespace.uri;
             }
             answers.modelFields = listFields(answers);
             answers.modelDisplayName = modules.inflection.humanize(answers.modelName);

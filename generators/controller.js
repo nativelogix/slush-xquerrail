@@ -100,7 +100,9 @@ gulp.task('controller', function (done) {
                 answers.controllerName = modules.inflection.pluralize(answers.modelName);
                 answers.modelDisplayName = modules.inflection.humanize(answers.modelName);
             }
-            answers.controllerNamespace = common.domain.find(answers.domainName).namespace.uri;
+            if (!answers.modelNamespace) {
+                answers.modelNamespace = common.domain.find('application').namespace.uri;
+            }
             common.domain.controller.build(
                 answers,
                 done
