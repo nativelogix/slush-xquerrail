@@ -8,10 +8,6 @@
 
 module.exports = function(gulp, common, modules) {
 
-var listControllers = function(answers) {
-    return common.domain.find(answers.domainName || common.domain.default).controllers;
-};
-
 var _answers = {
     'domainName': common.domain.default
 };
@@ -54,7 +50,6 @@ gulp.task('optionlist', function (done) {
     }, {
         name: 'optionListName',
         message: 'OptionList name?',
-        choices: listControllers,
         validate: validateOptionListName
     }, {
         name: 'optionListValues',
