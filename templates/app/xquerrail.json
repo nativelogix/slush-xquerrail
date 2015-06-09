@@ -1,5 +1,7 @@
 {
   "application": {
+    "name": "<%= xquerrail.name %>",
+    "user": "<%= xquerrail.user %>",
     "collation": "<%= xquerrail.collation %>",
     "domains": [
       {

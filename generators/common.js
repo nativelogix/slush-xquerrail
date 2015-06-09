@@ -11,6 +11,15 @@ module.exports = function(gulp, modules) {
     var XQUERRAIL_VERSION = "0.0.11";
     var ROXY_VERSION = "1.7.2";
     var DEFAULT_DOMAIN = 'content';
+    var DEFAULT_COLLATION = 'http://marklogic.com/collation/codepoint';
+    var DEFAULT_APPLICATION_NAMESPACE = {
+        'prefix': 'application',
+        'uri': 'http://xquerrail.com/application'
+    };
+    var DEFAULT_CONTENT_NAMESPACE = {
+        'prefix': 'content', 
+        'uri': 'http://xquerrail.com/content'
+    };
     var XQUERRAIL_JSON = './xquerrail.json';
     var PACKAGE_JSON = './package.json';
     var TYPE_MAPPINGS = {
@@ -56,19 +65,23 @@ module.exports = function(gulp, modules) {
      ];
 
     var fs = require('fs'),
+        exec = require('child_process').exec,
         nconf = require('nconf'),
         xpath = require('xpath'), 
         dom = require('xmldom').DOMParser
         xml2js = require('xml2js');
     var builder = new xml2js.Builder();
     var _configuration = nconf.file(XQUERRAIL_JSON);
+    if (!_configuration.get('application')) {
+        _configuration.set('application:domains', []);
+    }
+
     var _package = undefined;
 
     try {
-      // _package = require(PACKAGE_JSON);
       _package = JSON.parse(fs.readFileSync(PACKAGE_JSON));
     } catch (e) {
-        console.error(e);
+        // console.error(e);
     }
 
     var buildControllerXml = function(answers) {
@@ -349,9 +362,91 @@ module.exports = function(gulp, modules) {
         if (cb) cb();
     };
 
+    var installRoxy = function(answers, cb) {
+        var Download = require('download');
+        new Download({mode: '755', extract:true, strip:1})
+            .get('https://github.com/marklogic/roxy/releases/download/v' + answers.roxyVersion + '/roxy-' + answers.roxyVersion + '.zip')
+            .dest('./roxy')
+            .run(
+                function() {
+                    if (cb) cb();
+                }
+            );
+    };
+
+    var roxyBaseCommand = 'ruby -C./roxy -Ideploy -Ideploy/lib deploy/lib/ml.rb ';
+    
+    var initRoxy = function(answers, cb) {
+        var arguments = [
+            'init',
+            answers.roxyApplicationName,
+            '--server-version=' + answers.marklogicVersion
+        ]
+        var cmd = roxyBaseCommand + arguments.join(' ');
+        exec(cmd, function (err, stdout, stderr) {
+            console.log(stdout);
+            if (stderr) {console.log(stderr);}
+            if (err) {console.log(err);}
+            if (cb) {cb();}
+        });
+    };
+
+
+    var createRoxyEnvironment = function(answers, cb) {
+        // modules['_'].template(string, null, _.templateSettings);
+        var path = __dirname + '/../templates/roxy/**/*.properties';
+        gulp
+            .src(path)
+            .pipe(modules.template(answers, modules['_'].templateSettings))
+            .pipe(modules.conflict('./'))
+            .pipe(gulp.dest('./'))
+            .on('end', function () {
+                if (cb) cb();
+            });
+    };
+
+    var XQuerrailRoleXml = function(answers) {
+        return fs.readFileSync(__dirname + '/../templates/roxy/roxy/deploy/xquerrail-role-ml-config.xml');
+    };
+
+    var XQuerrailUserRoleXml = function(answers) {
+        return fs.readFileSync(__dirname + '/../templates/roxy/roxy/deploy/xquerrail-user-ml-config.xml');
+    };
+
+    var updateRoxyConfig = function(answers, cb) {
+        var path = './roxy/deploy/ml-config.xml';
+        gulp
+            .src(path)
+            .pipe(
+                modules['inject-string'].after(
+                    '<role-names>\n        <role-name>@ml.app-role</role-name>\n',
+                    XQuerrailUserRoleXml(answers)
+                )
+            )
+            .pipe(
+                modules['inject-string'].after(
+                    '<roles xmlns="http://marklogic.com/xdmp/security">\n',
+                    XQuerrailRoleXml(answers)
+                )
+            )
+            .pipe(gulp.dest(function(file) {
+                return file.base;
+            }))
+            .on('end', function () {
+                if (cb) cb();
+            });
+    };
+
     return {
         "package": _package,
         "configuration": _configuration,
+        "default": {
+            "collation": DEFAULT_COLLATION,
+            "namespaces": {
+                "application": DEFAULT_APPLICATION_NAMESPACE,
+                "content": DEFAULT_CONTENT_NAMESPACE
+            }
+        },
         "domain": {
             "default": DEFAULT_DOMAIN,
             "namespaces": function () {
@@ -465,23 +560,29 @@ module.exports = function(gulp, modules) {
                 }
             }
         },
-        "dependencies": {
+        "deployer": {
             "roxy": {
-                "install": function(answers, cb) {
-                    console.log('installRoxy: ' + answers.installRoxy);
-                    if (answers.installRoxy) {
-                        var Download = require('download');
-                        new Download({mode: '755', extract:true, strip:1})
-                            .get('https://github.com/marklogic/roxy/releases/download/v' + ROXY_VERSION + '/roxy-' + ROXY_VERSION + '.zip')
-                            .dest('./roxy')
-                            .run(
+                "version": ROXY_VERSION,
+                "setup": function(answers, cb) {
+                    installRoxy(
+                        answers,
+                        function() {
+                            initRoxy(
+                                answers,
                                 function() {
-                                    if (cb) cb();
+                                    createRoxyEnvironment(
+                                        answers,
+                                        function() {
+                                            updateRoxyConfig(
+                                                answers,
+                                                cb
+                                            )
+                                        }
+                                    );
                                 }
                             );
-                    } else {
-                        if (cb) cb();
-                    }
+                        }
+                    );
                 }
             }
         }
