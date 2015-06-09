@@ -11,11 +11,6 @@
   </route>
 
   <route id="application_resources" pattern="/(\i\c*)/resources/*" is-resource="true">
-
-  </route>
-
-  <route id="initialize" pattern="^/initialize(.xqy)?$" is-resource="true">
-    <to>/main/_framework/initialize.xqy</to>
   </route>
 
   <!-- Only required to run xray tests -->
@@ -26,22 +21,21 @@
     <prepend>/xray/</prepend>
   </route>
 
-  <route id="app-test_index" pattern="^/$">
-    <default key="_controller">app-test:default:index:html</default>
+  <route id="default_index" pattern="^/$">
+    <default key="_controller"><%= xquerrail.name %>:default:index:html</default>
   </route>
 
-  <route id="app-test_login" pattern="^/login(.html)?">
-    <!-- <default key="_controller">app-test:base:login.html</default> -->
-    <default key="_controller">app-test:base:login</default>
+  <route id="default_login" pattern="^/login(.html)?">
+    <default key="_controller"><%= xquerrail.name %>:base:login</default>
   </route>
-  <route id="app-test_logout" pattern="^/logout(.html)?">
-    <default key="_controller">app-test:base:logout:html</default>
+  <route id="default_logout" pattern="^/logout(.html)?">
+    <default key="_controller"><%= xquerrail.name %>:base:logout:html</default>
   </route>
-  <route id="app-test_default_index" pattern="^/(\i\c*[^/])/?$">
-    <default key="_controller">app-test:$1:index:html</default>
+  <route id="default_default_index" pattern="^/(\i\c*[^/])/?$">
+    <default key="_controller"><%= xquerrail.name %>:$1:index:html</default>
   </route>
-  <route id="app-test_controller_action_format" pattern="^/(\i\c*[^/])/(\i\c*)\.(html|xml|json)$">
-    <default key="_controller">app-test:$1:$2:$3</default>
+  <route id="default_controller_action_format" pattern="^/(\i\c*[^/])/(\i\c*)\.(html|xml|json)$">
+    <default key="_controller"><%= xquerrail.name %>:$1:$2:$3</default>
   </route>
 
 </routes>

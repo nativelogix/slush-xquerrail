@@ -5,6 +5,10 @@
     <application-namespace prefix="<%= xquerrail.applicationNamespace.prefix %>" namespace-uri="<%= xquerrail.applicationNamespace.uri %>"/>
     <content-namespace prefix="<%= xquerrail.contentNamespace.prefix %>" namespace-uri="<%= xquerrail.contentNamespace.uri %>"/>
     <default-collation><%= xquerrail.collation %></default-collation>
+    <import id="content" resource="content-domain.xml"/>
+    <!-- Define default navigation features -->
+    <navigation pageSize="10" listable="true" searchable="true"/>
+    
   <!-- models -->
 
   <!-- optionlists -->

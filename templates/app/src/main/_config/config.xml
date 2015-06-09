@@ -7,14 +7,14 @@
     <routes-config resource="routes.xml"/>
     <routes-module resource="routing.xqy"/>
 
-    <controller-extension resource="/test/mocha/test/default-app-test/app/extensions/default.controller.extension.xqy"/>
+    <controller-extension/>
 
-    <anonymous-user value="xquerrail2-anonymous-user"/>
+    <anonymous-user value="<%= xquerrail.user %>"/>
 
-    <default-application value="app-test"/>
+    <default-application value="<%= xquerrail.name %>"/>
 
     <!--Register Your Application(s) Here-->
-    <application name="app-test" namespace="http://xquerrail.com/app-test" uri="/test/mocha/test/default-app-test/app">
+    <application name="<%= xquerrail.name %>" namespace="<%= xquerrail.applicationNamespace.uri %>" uri="/main/app">
       <domain resource="domains/application-domain.xml" />
       <script-directory resource="resources/js/"/>
       <stylesheet-directory resource="resources/css/"/>
@@ -23,14 +23,14 @@
 
     <!--Interceptors-->
     <interceptors>
-       <interceptor
+       <!-- interceptor
             name="ml-security"
             resource="ml-security.xml"
             before-request="false"
             after-request="true"
             before-response="false"
             after-response="false"
-        />
+        / -->
     </interceptors>
     <properties/>
 </config>

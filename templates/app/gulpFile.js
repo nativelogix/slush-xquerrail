@@ -8,8 +8,8 @@ var xray = require('gulp-xray-runner')
 var argv = require('yargs').argv;
 var mocha = require('gulp-mocha');
 var watch = require('gulp-watch');
-var plumber = require('gulp-plumber');
 var runSequence = require('run-sequence');
+var exec = require('child_process').exec;
 
 var ml;
 try {
@@ -17,10 +17,43 @@ try {
 } catch (e) {
   ml = argv.ml;
 }
+
+if (!ml) {
+  ml = {};
+}
+
+if (!ml.roxy) {
+  ml['roxy'] = {
+    "base": "./roxy",
+    "environment": "local"
+  }
+};
+
 var version = pkg.version;
 var lastCommit;
 
 module.exports.ml = ml;
+
+var roxyCommand = 'ruby -C' + ml.roxy.base + ' -Ideploy -Ideploy/lib deploy/lib/ml.rb ' + ml.roxy.environment;
+var executeRoxy = function(arg, cb) {
+  var cmd = roxyCommand + ' ' + arg.cmd;
+  if (arg.arg) {
+    cmd += ' ' + arg.arg;
+  }
+  exec(cmd, function (err, stdout, stderr) {
+    console.log(stdout);
+    if (stderr) {console.log(stderr);}
+    if (err) {console.log(err);}
+    if (cb) {cb();}
+  })
+};
+
+gulp.task('roxy', function(cb) {executeRoxy(argv, cb)});
+
+gulp.task('roxy:bootstrap', function(cb) {
+  argv['cmd'] = 'bootstrap';
+  executeRoxy(argv, cb)
+});
 
 gulp.task('xray', function (cb) {
   var options = {
