@@ -3,8 +3,6 @@
 var argv = require('yargs').argv;
 var path = require('path');
 var request = require('request').defaults({jar: true});
-var assert = require('chai').assert;
-var expect = require('chai').expect;
 
 var xquerrailCommon = (function() {
   var settings = {};
@@ -20,6 +18,10 @@ var xquerrailCommon = (function() {
   }
 
   ml = ml || {};
+
+  if (ml.ml) {
+    ml = ml.ml;
+  }
 
   ml.user = argv.user || process.env['ml.user'] || ml.user;
   ml.password = argv.password || process.env['ml.password'] || ml.password;
@@ -39,7 +41,6 @@ var xquerrailCommon = (function() {
   function getApplicationConfig(filename) {
     var configurationPath;
     if (filename === undefined) {
-      // configurationPath = '/main/_config';
       return
     } else {
       configurationPath = getApplicationConfigPath(filename)
@@ -97,6 +98,9 @@ var xquerrailCommon = (function() {
 
   function httpMethod(method, model, action, data, qs, callback, format) {
     format = (format === undefined? '.json': format);
+    if (format.substring(0, 1) !== '.') {
+      format = '.' + format;
+    }
     var json = (format === '.json');
     var headers = {
       'userId': settings.currentUser

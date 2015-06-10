@@ -13,6 +13,10 @@ import module namespace model = "<%= modelNamespace %>/models/<%= modelName %>" 
 
 declare option xdmp:mapping "false";
 
+declare function custom-action() {
+	<custom-action/>
+};
+
 <% controllerFunctions.forEach( function(f) { %>
 declare function controller:<%= f %>() {
 	<<%= f %>/>

@@ -114,15 +114,19 @@ module.exports = function(gulp, modules) {
 
     var addControllerFile = function(answers, cb) {
         gulp
-            .src(__dirname + '/../templates/controller/**')
+            .src(__dirname + '/../templates/controller/src/main/**')
             .pipe(modules.template(answers))
             .pipe(modules.rename(function (file) {
-                if (modules['_.string'].endsWith(modules.path.basename(file.basename), '-controller')) {
-                    file.basename = answers.controllerName + file.basename;
-                }
+                file.dirname = modules['_'].template(file.dirname)(answers);
+                file.basename = modules['_'].template(file.basename)(answers);
             }))
-            .pipe(modules.conflict('./'))
-            .pipe(gulp.dest('./'))
+            // .pipe(modules.rename(function (file) {
+            //     if (modules['_.string'].endsWith(modules.path.basename(file.basename), '-controller')) {
+            //         file.basename = answers.controllerName + file.basename;
+            //     }
+            // }))
+            .pipe(modules.conflict('./src/main/'))
+            .pipe(gulp.dest('./src/main/'))
             .on('end', function () {
                 if (cb) cb();
             });
@@ -142,6 +146,25 @@ module.exports = function(gulp, modules) {
         _configuration.set('application:domains', domains);
         _configuration.save();
         if (cb) cb();
+    };
+
+    var buildControllerMochaTest = function(answers, cb) {
+        if (! answers.controllerIncludeTests) {
+            if (cb) cb();
+        } else {
+            gulp
+                .src(__dirname + '/../templates/controller/src/test/**')
+                .pipe(modules.template(answers))
+                .pipe(modules.rename(function (file) {
+                    file.dirname = modules['_'].template(file.dirname)(answers);
+                    file.basename = modules['_'].template(file.basename)(answers);
+                }))
+                .pipe(modules.conflict('./src/test/'))
+                .pipe(gulp.dest('./src/test/'))
+                .on('end', function () {
+                    if (cb) cb();
+                });
+        }
     };
 
     var parseModelField = function(fieldName) {
@@ -208,16 +231,34 @@ module.exports = function(gulp, modules) {
             });
     };
     
+    var buildModelXrayTest = function(answers, cb) {
+        if (! answers.modelIncludeTests) {
+            if (cb) cb();
+        } else {
+            gulp
+                .src(__dirname + '/../templates/model/src/test/**')
+                .pipe(modules.template(answers))
+                .pipe(modules.rename(function (file) {
+                    file.dirname = modules['_'].template(file.dirname)(answers);
+                    file.basename = modules['_'].template(file.basename)(answers);
+                }))
+                .pipe(modules.conflict('./src/test/'))
+                .pipe(gulp.dest('./src/test/'))
+                .on('end', function () {
+                    if (cb) cb();
+                });
+        }
+    };
+
     var addModelFile = function (answers, cb) {
-        gulp.src(__dirname + '/../templates/model/**')
+        gulp.src(__dirname + '/../templates/model/src/main/**')
             .pipe(modules.template(answers))
             .pipe(modules.rename(function (file) {
-                if (modules['_.string'].endsWith(modules.path.basename(file.basename), '-model')) {
-                    file.basename = answers.modelName + file.basename;
-                }
+                file.dirname = modules['_'].template(file.dirname)(answers);
+                file.basename = modules['_'].template(file.basename)(answers);
             }))
-            .pipe(modules.conflict('./'))
-            .pipe(gulp.dest('./'))
+            .pipe(modules.conflict('./src/main/'))
+            .pipe(gulp.dest('./src/main/'))
             .on('end', function () {
                 if (cb) cb();
             });
@@ -362,9 +403,21 @@ module.exports = function(gulp, modules) {
         if (cb) cb();
     };
 
+    var installXray = function(answers, cb) {
+        var Download = require('download');
+        new Download({mode: '755', extract: true, strip: 1})
+            .get('https://github.com/robwhitby/xray/archive/master.zip')
+            .dest('./src/xray')
+            .run(
+                function() {
+                    if (cb) cb();
+                }
+            );
+    };
+
     var installRoxy = function(answers, cb) {
         var Download = require('download');
-        new Download({mode: '755', extract:true, strip:1})
+        new Download({mode: '755', extract: true, strip: 1})
             .get('https://github.com/marklogic/roxy/releases/download/v' + answers.roxyVersion + '/roxy-' + answers.roxyVersion + '.zip')
             .dest('./roxy')
             .run(
@@ -392,12 +445,12 @@ module.exports = function(gulp, modules) {
     };
 
 
-    var createRoxyEnvironment = function(answers, cb) {
-        // modules['_'].template(string, null, _.templateSettings);
-        var path = __dirname + '/../templates/roxy/**/*.properties';
+    var createMlJson = function(answers, cb) {
+        var path = __dirname + '/../templates/roxy/ml.json';
         gulp
             .src(path)
-            .pipe(modules.template(answers, modules['_'].templateSettings))
+            // .pipe(modules.template(answers, modules['_'].templateSettings))
+            .pipe(modules.template(answers))
             .pipe(modules.conflict('./'))
             .pipe(gulp.dest('./'))
             .on('end', function () {
@@ -405,11 +458,24 @@ module.exports = function(gulp, modules) {
             });
     };
 
-    var XQuerrailRoleXml = function(answers) {
+    var createRoxyEnvironment = function(answers, cb) {
+        var path = __dirname + '/../templates/roxy/**/*.properties';
+        gulp
+            .src(path)
+            .pipe(modules.template(answers, modules['_'].templateSettings))
+            // .pipe(modules.template(answers))
+            .pipe(modules.conflict('./'))
+            .pipe(gulp.dest('./'))
+            .on('end', function () {
+                if (cb) cb();
+            });
+    };
+
+    var xquerrailRoleXml = function(answers) {
         return fs.readFileSync(__dirname + '/../templates/roxy/roxy/deploy/xquerrail-role-ml-config.xml');
     };
 
-    var XQuerrailUserRoleXml = function(answers) {
+    var xquerrailUserRoleXml = function(answers) {
         return fs.readFileSync(__dirname + '/../templates/roxy/roxy/deploy/xquerrail-user-ml-config.xml');
     };
 
@@ -420,13 +486,13 @@ module.exports = function(gulp, modules) {
             .pipe(
                 modules['inject-string'].after(
                     '<role-names>\n        <role-name>@ml.app-role</role-name>\n',
-                    XQuerrailUserRoleXml(answers)
+                    xquerrailUserRoleXml(answers)
                 )
             )
             .pipe(
                 modules['inject-string'].after(
                     '<roles xmlns="http://marklogic.com/xdmp/security">\n',
-                    XQuerrailRoleXml(answers)
+                    xquerrailRoleXml(answers)
                 )
             )
             .pipe(gulp.dest(function(file) {
@@ -441,6 +507,9 @@ module.exports = function(gulp, modules) {
         "package": _package,
         "configuration": _configuration,
         "default": {
+            "xquerrail": {
+                "version": XQUERRAIL_VERSION
+            },
             "collation": DEFAULT_COLLATION,
             "namespaces": {
                 "application": DEFAULT_APPLICATION_NAMESPACE,
@@ -490,7 +559,12 @@ module.exports = function(gulp, modules) {
                                     updateControllerConfiguration(
                                         answers,
                                         function() {
-                                            if (cb) cb();
+                                            buildControllerMochaTest(
+                                                answers,
+                                                function () {
+                                                    if (cb) cb();
+                                                }
+                                            )
                                         }
                                     )
                                 }
@@ -510,7 +584,12 @@ module.exports = function(gulp, modules) {
                                     updateModelConfiguration(
                                         answers,
                                         function() {
-                                            if (cb) cb();
+                                            buildModelXrayTest(
+                                                answers,
+                                                function() {
+                                                    if (cb) cb();
+                                                }
+                                            )
                                         }
                                     )
                                 }
@@ -560,6 +639,13 @@ module.exports = function(gulp, modules) {
                 }
             }
         },
+        "dependencies": {
+            "xray": {
+                "setup": function(answers, cb) {
+                    installXray(answers, cb);
+                }
+            }
+        },
         "deployer": {
             "roxy": {
                 "version": ROXY_VERSION,
@@ -573,9 +659,14 @@ module.exports = function(gulp, modules) {
                                     createRoxyEnvironment(
                                         answers,
                                         function() {
-                                            updateRoxyConfig(
+                                            createMlJson(
                                                 answers,
-                                                cb
+                                                function() {
+                                                    updateRoxyConfig(
+                                                        answers,
+                                                        cb
+                                                    )
+                                                }
                                             )
                                         }
                                     );

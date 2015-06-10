@@ -9,18 +9,15 @@ var argv = require('yargs').argv;
 var mocha = require('gulp-mocha');
 var watch = require('gulp-watch');
 var runSequence = require('run-sequence');
+var nconf = require('nconf');
 var exec = require('child_process').exec;
 
-var ml;
-try {
-  ml = require('./ml.json')
-} catch (e) {
-  ml = argv.ml;
-}
+nconf
+  .argv()
+  .env()
+  .file({ file: './ml.json' });
 
-if (!ml) {
-  ml = {};
-}
+var ml = nconf.get('ml');
 
 if (!ml.roxy) {
   ml['roxy'] = {
@@ -28,9 +25,6 @@ if (!ml.roxy) {
     "environment": "local"
   }
 };
-
-var version = pkg.version;
-var lastCommit;
 
 module.exports.ml = ml;
 
@@ -70,16 +64,13 @@ gulp.task('xray', function (cb) {
   xray(options, cb);
 });
 
-gulp.task('mocha', function (cb) {
+gulp.task('mocha', function () {
   var mochaOptions = {
     timeout: 15000,
     reporter: 'spec'
   };
   gulp.src('src/test/mocha/test/*.js')
-    .pipe(mocha(mochaOptions))
-    .on('end', function() {
-      cb();
-    });
+    .pipe(mocha(mochaOptions));
 });
 
 gulp.task('test', function(cb) {

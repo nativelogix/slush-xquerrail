@@ -18,7 +18,7 @@ gulp.task('controller', function (done) {
     };
 
     function listModelNames(answers) {
-        var models = common.configuration.get('domain:models').slice(0);
+        var models = common.domain.find('content').models.slice(0);
         models.unshift('');
         return models;
     };
@@ -73,6 +73,10 @@ gulp.task('controller', function (done) {
         validate: validateControllerName
     }, {
         type: 'confirm',
+        name: 'controllerIncludeTests',
+        message: 'Create Mocha tests?'
+    }, {
+        type: 'confirm',
         name: 'controllerOverrideFunctions',
         message: 'Override functions?'
     }, {
@@ -89,7 +93,6 @@ gulp.task('controller', function (done) {
     //Ask
     modules.inquirer.prompt(prompts,
         function (answers) {
-            console.log(answers);
             if (!answers.moveon) {
                 return done();
             }
@@ -103,6 +106,7 @@ gulp.task('controller', function (done) {
             if (!answers.modelNamespace) {
                 answers.modelNamespace = common.domain.find('application').namespace.uri;
             }
+            answers.controllerNamespace = answers.modelNamespace;
             common.domain.controller.build(
                 answers,
                 done

@@ -87,7 +87,6 @@ gulp.task('view', function (done) {
     //Ask
     modules.inquirer.prompt(prompts,
         function (answers) {
-            console.log(answers);
             if (!answers.moveon) {
                 return done();
             }

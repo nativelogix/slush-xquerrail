@@ -93,6 +93,10 @@ module.exports = function(gulp, common, modules) {
             message: 'What is the version of your project?',
             default: '0.1.0'
         }, {
+            name: 'xquerrailVersion',
+            message: 'XQuerrail version?',
+            default: common.default.xquerrail.version
+        }, {
             name: 'xquerrailApplicationNamespace',
             message: 'What is the application namespace? Supported format {prefix}:{namespace}',
             default: defaults.xquerrail.applicationNamespace,
@@ -114,10 +118,10 @@ module.exports = function(gulp, common, modules) {
             name: 'authorEmail',
             message: 'What is the author email?',
             default: defaults.authorEmail
-        }, {
-            name: 'userName',
-            message: 'What is the github username?',
-            default: defaults.userName
+        // }, {
+        //     name: 'userName',
+        //     message: 'What is the github username?',
+        //     default: defaults.userName
         }, {
             type: 'confirm',
             name: 'moveon',
@@ -145,14 +149,19 @@ module.exports = function(gulp, common, modules) {
                 delete answers.xquerrailContentNamespace;
                 answers.xquerrail.collation = answers.xquerrailCollation;
                 delete answers.xquerrailCollation;
-                gulp.src(__dirname + '/../templates/app/**')
-                    .pipe(modules.template(answers))
-                    .pipe(modules.conflict('./'))
-                    .pipe(gulp.dest('./'))
-                    .pipe(modules.install())
-                    .on('end', function () {
-                        done();
-                    });
+                common.dependencies.xray.setup(
+                    answers,
+                    function() {
+                        gulp.src(__dirname + '/../templates/app/**')
+                            .pipe(modules.template(answers))
+                            .pipe(modules.conflict('./'))
+                            .pipe(gulp.dest('./'))
+                            .pipe(modules.install())
+                            .on('finish', function () {
+                                console.log('FINISHED');
+                                done();
+                            });
+                });
             });
     });
   return gulp;

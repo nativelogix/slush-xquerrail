@@ -97,6 +97,10 @@ gulp.task('model', function (done) {
         choices: listFields,
         validate: common.validation.required
     }, {
+        type: 'confirm',
+        name: 'modelIncludeTests',
+        message: 'Create Xray tests?'
+    }, {
         name: 'controllerIncludeModel',
         type: 'confirm',
         message: 'Create controller?'
@@ -107,13 +111,17 @@ gulp.task('model', function (done) {
         default: defaultControllerName
     }, {
         type: 'confirm',
+        name: 'controllerIncludeTests',
+        message: 'Create Mocha tests?',
+        when: showControllerName
+    }, {
+        type: 'confirm',
         name: 'moveon',
         message: 'Continue?'
     }];
     //Ask
     modules.inquirer.prompt(prompts,
         function (answers) {
-            console.log(answers);
             if (!answers.moveon) {
                 return done();
             }

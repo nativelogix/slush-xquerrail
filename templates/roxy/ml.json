@@ -1,0 +1,12 @@
+{
+  "ml" : {
+    "user": "<%= roxyBootstrapUser %>",
+    "password": "<%= roxyBootstrapPassword %>",
+    "host": "<%= markLogicHost %>",
+    "port": <%= roxyApplicationPort %>
+  },
+  "roxy" : {
+  	"base": "./roxy",
+  	"environment": "local"
+  }
+}
