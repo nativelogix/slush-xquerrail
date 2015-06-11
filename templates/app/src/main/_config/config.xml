@@ -11,10 +11,12 @@
 
     <anonymous-user value="<%= xquerrail.user %>"/>
 
+    <base-view-directory value="/main/<%= xquerrail.name %>/views/base/"/>
+
     <default-application value="<%= xquerrail.name %>"/>
 
     <!--Register Your Application(s) Here-->
-    <application name="<%= xquerrail.name %>" namespace="<%= xquerrail.applicationNamespace.uri %>" uri="/main/app">
+    <application name="<%= xquerrail.name %>" namespace="<%= xquerrail.applicationNamespace.uri %>" uri="/main/<%= xquerrail.name %>">
       <domain resource="domains/application-domain.xml" />
       <script-directory resource="resources/js/"/>
       <stylesheet-directory resource="resources/css/"/>

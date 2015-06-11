@@ -1,4 +1,5 @@
 node_modules/
 temp
 *.log
-.idea
+*.sublime-workspace
+*.sublime-project
