@@ -8,7 +8,7 @@
 
 module.exports = function(gulp, modules) {
 
-    var XQUERRAIL_VERSION = "0.0.11";
+    var XQUERRAIL_VERSION = "0.0.12";
     var ROXY_VERSION = "1.7.2";
     var DEFAULT_DOMAIN = 'content';
     var DEFAULT_COLLATION = 'http://marklogic.com/collation/codepoint';
