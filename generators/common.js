@@ -206,7 +206,7 @@ module.exports = function(gulp, modules) {
         model['$']['keyLabel'] = parseModelField(answers.modelKeyLabel).name;
         answers.modelFields.forEach(function(name) {
             var field = parseModelField(name);
-            if (name == answers.model) {
+            if (field.name == model['$']['key']) {
                 field["identity"] = true;
             }
             model['element'].push({
