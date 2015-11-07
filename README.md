@@ -8,7 +8,7 @@
 Install `slush-xquerrail` globally:
 
 ```bash
-$ npm install -g slush-xquerrail
+$ npm install -g nativelogix/slush-xquerrail
 ```
 
 ### Usage
