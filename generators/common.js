@@ -31,7 +31,7 @@ module.exports = function(gulp, modules) {
         "i": "integer",
         "b": "boolean",
         "dt": "date",
-        "dtm": "datetime",
+        "dtm": "dateTime",
         "id": "identity",
         "iri": "iri",
         "ct": "create-timestamp",
@@ -204,10 +204,13 @@ module.exports = function(gulp, modules) {
         }
         model['$']['key'] = parseModelField(answers.modelKey).name;
         model['$']['keyLabel'] = parseModelField(answers.modelKeyLabel).name;
-        answers.modelFields.forEach(function(field) {
-
+        answers.modelFields.forEach(function(name) {
+            var field = parseModelField(name);
+            if (name == answers.model) {
+                field["identity"] = true;
+            }
             model['element'].push({
-                '$' : parseModelField(field)
+                '$' : field
             });
         });
         return new xml2js.Builder({'rootName': 'model', 'headless': true}).buildObject(model);
