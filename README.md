@@ -25,6 +25,8 @@ Run the generator from within the new folder:
 $ cd my-slush-xquerrail && slush xquerrail
 ```
 
+[Full example](https://github.com/nativelogix/slush-xquerrail/wiki/Sample)  
+
 ## Getting To Know Slush
 
 Slush is a tool that uses Gulp for project scaffolding.
