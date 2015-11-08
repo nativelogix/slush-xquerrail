@@ -498,6 +498,36 @@ module.exports = function(gulp, modules) {
                     xquerrailRoleXml(answers)
                 )
             )
+            .pipe(
+                modules['inject-string'].after(
+                    '<range-element-indexes>\n',
+                    '      @ml.range-element-index-xml\n'
+                )
+            )
+            .pipe(
+                modules['inject-string'].after(
+                    '<range-element-attribute-indexes>\n',
+                    '      @ml.range-element-attribute-index-xml\n'
+                )
+            )
+            .pipe(
+                modules['inject-string'].after(
+                    '<range-field-indexes>\n',
+                    '      @ml.range-field-index-xml\n'
+                )
+            )
+            .pipe(
+                modules['inject-string'].after(
+                    '<path-namespaces>\n',
+                    '      @ml.path-namespace-xml\n'
+                )
+            )
+            .pipe(
+                modules['inject-string'].after(
+                    '<range-path-indexes>\n',
+                    '      @ml.range-path-index-xml\n'
+                )
+            )
             .pipe(gulp.dest(function(file) {
                 return file.base;
             }))
@@ -505,6 +535,17 @@ module.exports = function(gulp, modules) {
                 if (cb) cb();
             });
     };
+
+    var xquerrailCustomFunctions = function(answers, cb) {
+        var path = __dirname + '/../templates/roxy/**/app_specific.rb';
+        gulp
+            .src(path)
+            .pipe(modules.template(answers, modules['_'].templateSettings))
+            .pipe(gulp.dest('./'))
+            .on('end', function () {
+                if (cb) cb();
+            });
+    }
 
     return {
         "package": _package,
@@ -667,7 +708,12 @@ module.exports = function(gulp, modules) {
                                                 function() {
                                                     updateRoxyConfig(
                                                         answers,
-                                                        cb
+                                                        function () {
+                                                            xquerrailCustomFunctions(
+                                                                answers,
+                                                                cb
+                                                            )
+                                                        }
                                                     )
                                                 }
                                             )
